@@ -24,10 +24,21 @@ export class PostsService {
   }
 
   async updatePost(id: string, postData: any): Promise<any | null> {
-    // Implementa el método de actualización si es necesario
+    try {
+      const updatedPost = await this.postModel
+        .findByIdAndUpdate(id, postData, { new: true })
+        .exec();
+      return updatedPost;
+    } catch (error: any) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 
   async deletePost(id: string): Promise<void> {
-    // Implementa el método de eliminación si es necesario
+    try {
+      await this.postModel.findByIdAndDelete(id).exec();
+    } catch (error: any) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }
